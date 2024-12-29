@@ -6,4 +6,4 @@ export interface Photo {
   caption?: string;
   uploaded_at: string;
   user_id: string;
-} 
+}

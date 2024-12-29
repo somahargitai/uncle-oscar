@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
@@ -29,6 +31,16 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8  rounded-lg ">
+        <div className="flex justify-center">
+          <Image
+            className="dark:invert"
+            src="/uncle-oscar-drawn.svg"
+            alt="Uncle Oscar logo"
+            width={180}
+            height={180}
+            priority
+          />
+        </div>
         <h2 className="text-center text-3xl font-bold text-gray-900 mt-2">
           Sign in
         </h2>

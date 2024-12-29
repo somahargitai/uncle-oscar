@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
@@ -80,6 +81,15 @@ export default function Login() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+        <div className="text-center text-sm text-gray-600 mt-4">
+          <Link href="/" className="hover:text-gray-900 mr-4">
+            Back to Home
+          </Link>
+          <span>•</span>
+          <Link href="/signup" className="hover:text-gray-900 ml-4">
+            Create an account
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { FamilyMembers, Person } from "@/types/family";
 import { supabase } from "@/lib/supabaseClient";
+import Navigation from "@/components/Navigation";
+import { useRouter } from "next/router";
 
 export default function FamilyPage() {
   const [familyMembers, setFamilyMembers] = useState<FamilyMembers>({
@@ -11,6 +13,30 @@ export default function FamilyPage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        router.push("/login");
+      } else {
+        setUser(session.user);
+      }
+    };
+
+    fetchUser();
+  }, [router]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   useEffect(() => {
     const fetchFamilyMembers = async () => {
@@ -25,11 +51,11 @@ export default function FamilyPage() {
             Authorization: `Bearer ${sessionData.session.access_token}`,
           },
         });
-        
+
         if (!response.ok) {
           throw new Error("Failed to fetch family members");
         }
-        
+
         const data = await response.json();
         setFamilyMembers(data);
       } catch (err) {
@@ -68,30 +94,33 @@ export default function FamilyPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Family Members</h1>
+    <>
+      <Navigation user={user} onLogout={handleLogout} />
+      <div className="container mx-auto pt-16 p-4">
+        <h1 className="text-2xl font-bold mb-6">Family </h1>
 
-      <div className="space-y-6">
-        <section>
-          <h2 className="text-xl font-semibold mb-3">Parents</h2>
-          {renderPersonList(familyMembers.parents, "parents")}
-        </section>
+        <div className="space-y-6">
+          <section>
+            <h2 className="text-xl font-semibold mb-3">Parents</h2>
+            {renderPersonList(familyMembers.parents, "parents")}
+          </section>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-3">Children</h2>
-          {renderPersonList(familyMembers.children, "children")}
-        </section>
+          <section>
+            <h2 className="text-xl font-semibold mb-3">Children</h2>
+            {renderPersonList(familyMembers.children, "children")}
+          </section>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-3">Siblings</h2>
-          {renderPersonList(familyMembers.siblings, "siblings")}
-        </section>
+          <section>
+            <h2 className="text-xl font-semibold mb-3">Siblings</h2>
+            {renderPersonList(familyMembers.siblings, "siblings")}
+          </section>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-3">Grandparents</h2>
-          {renderPersonList(familyMembers.grandparents, "grandparents")}
-        </section>
+          <section>
+            <h2 className="text-xl font-semibold mb-3">Grandparents</h2>
+            {renderPersonList(familyMembers.grandparents, "grandparents")}
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

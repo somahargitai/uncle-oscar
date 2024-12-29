@@ -27,7 +27,11 @@ export default function Navigation({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link
+            //   href="/"
+            href={user ? "/dashboard" : "/"}
+            className="flex items-center"
+          >
             <Image
               src="/uncle-oscar-small-logo.svg"
               alt="Logo"
@@ -41,12 +45,6 @@ export default function Navigation({
           {user ? (
             // Logged in navigation
             <div className="flex items-center gap-4">
-              <Link
-                href="/dashboard"
-                className="text-gray-200 hover:text-white"
-              >
-                Dashboard
-              </Link>
               <Link href="/photos" className="text-gray-200 hover:text-white">
                 Photos
               </Link>

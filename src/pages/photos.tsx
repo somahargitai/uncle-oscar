@@ -1,11 +1,38 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Photo } from '@/types/photo';
+import { supabase } from '@/lib/supabaseClient';
+import Navigation from '@/components/Navigation';
 
 export default function PhotosPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        router.push("/login");
+      } else {
+        setUser(session.user);
+      }
+    };
+
+    fetchUser();
+  }, [router]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -27,15 +54,17 @@ export default function PhotosPage() {
   }, []);
 
   if (loading) {
-    return <div className="p-4">Loading...</div>;
+    return <div className="pt-16 p-4">Loading...</div>;
   }
 
   if (error) {
-    return <div className="p-4 text-red-500">Error: {error}</div>;
+    return <div className="pt-16 p-4 text-red-500">Error: {error}</div>;
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <>
+    <Navigation user={user} onLogout={handleLogout} />
+    <div className="container mx-auto pt-16 p-4">
       <h1 className="text-2xl font-bold mb-6">Photos</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {photos.map((photo) => (
@@ -64,5 +93,6 @@ export default function PhotosPage() {
         ))}
       </div>
     </div>
+    </>
   );
 }

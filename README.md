@@ -1,7 +1,8 @@
 
 # Uncle Oscar
 
-<img src="public/uncle-oscar-drawn.svg" width="35%">
+<img src="public/uncle-oscar-drawn.svg#gh-light-mode-only" width="35%">
+<img src="public/uncle-oscar-drawn.svg#gh-dark-mode-only" width="35%" style="filter: invert(1)">
 
 Uncle Oscar is a family photo sharing web application built with Next.js 14, TypeScript, and Supabase. It allows family members to:
 

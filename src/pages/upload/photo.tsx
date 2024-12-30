@@ -109,7 +109,7 @@ export default function UploadPhotoPage() {
         <form onSubmit={handleSubmit} className="max-w-lg w-full mx-auto">
           <div
             {...getRootProps()}
-            className={`mb-6 p-8 border-2 border-dashed rounded-lg text-center cursor-pointer
+            className={`mb-6 border-2 border-dashed rounded-lg text-center cursor-pointer min-h-[250px] flex items-center justify-center
               ${isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"}
               ${preview ? "p-4" : "p-8"}`}
           >

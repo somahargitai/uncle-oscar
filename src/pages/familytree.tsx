@@ -69,7 +69,7 @@ export default function FamilyPage() {
   }, []);
 
   if (loading) {
-    return <div>Loading family members...</div>;
+    return <div className="pt-16 p-4">Loading family members...</div>;
   }
 
   if (error) {

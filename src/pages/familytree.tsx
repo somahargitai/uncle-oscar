@@ -3,6 +3,7 @@ import { FamilyMembers, Person } from "@/types/family";
 import { supabase } from "@/lib/supabaseClient";
 import Navigation from "@/components/Navigation";
 import { useRouter } from "next/router";
+import { User } from "@supabase/supabase-js";
 
 export default function FamilyPage() {
   const [familyMembers, setFamilyMembers] = useState<FamilyMembers>({
@@ -14,7 +15,7 @@ export default function FamilyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {

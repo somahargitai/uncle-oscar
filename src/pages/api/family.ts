@@ -10,7 +10,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("🚩 FAMILY ENDPOINT");
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -19,17 +18,14 @@ export default async function handler(
     // Get the auth header
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      console.log("🚩 NO AUTH HEADER");
       return res.status(401).json({ error: "Missing auth header" });
     }
     // Get user from the token
     const {
       data: { user },
     } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-    
-    console.log("🚩 USER:", user);
+
     if (!user) {
-      console.log("🚩 NO USER");
       return res.status(401).json({ error: "Unauthorized" });
     }
 
@@ -41,12 +37,10 @@ export default async function handler(
       .single();
 
     if (personError || !personRecord) {
-      console.log("🚩 NO PERSON RECORD");
       return res.status(404).json({ error: "Person record not found" });
     }
 
     const personId = personRecord.id;
-    console.log(`🚩 PERSON ID: ${personId}`);
 
     // Get parents - map to match Person interface
     const { data: parents } = await supabase

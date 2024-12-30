@@ -12,7 +12,7 @@ interface NavigationProps {
 
 export default function Navigation({
   user,
-  transparent = false,
+//   transparent = false,
   onLogout,
 }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

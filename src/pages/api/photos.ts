@@ -15,20 +15,10 @@ export default async function handler(
   }
 
   try {
-    // const { data: singlePhoto, error: singlePhotoError } = await supabase
-    //   .from("photos")
-    //   .select("*")
-    //   .single();
-
-    // console.log("HEY");
-    // console.log(singlePhoto);
-
     const { data, error } = await supabase
       .from("photos")
       .select("*")
       .order("uploaded_at", { ascending: false });
-
-    console.log(JSON.stringify(data));
 
     if (error) throw error;
 

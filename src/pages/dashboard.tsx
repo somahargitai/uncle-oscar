@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
-
+import { User } from "@supabase/supabase-js";
 import { Upload, Users, FileText, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import Navigation from '@/components/Navigation';
+import Navigation from "@/components/Navigation";
 
 export default function Dashboard() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,7 +64,9 @@ export default function Dashboard() {
                   <Card className="p-6 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors cursor-pointer">
                     <div className="flex flex-col items-center text-center space-y-4">
                       <Users className="w-12 h-12 text-green-500" />
-                      <h2 className="text-xl font-semibold">Add Family Member</h2>
+                      <h2 className="text-xl font-semibold">
+                        Add Family Member
+                      </h2>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         Add new members to your family tree
                       </p>
@@ -76,7 +78,9 @@ export default function Dashboard() {
                   <Card className="p-6 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors cursor-pointer">
                     <div className="flex flex-col items-center text-center space-y-4">
                       <FileText className="w-12 h-12 text-yellow-500" />
-                      <h2 className="text-xl font-semibold">Upload Documents</h2>
+                      <h2 className="text-xl font-semibold">
+                        Upload Documents
+                      </h2>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         Preserve important family documents
                       </p>

@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 import Link from "next/link";
 
+const imageUrl = `/api/r2/20241222_184057.jpg`;
+
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -41,7 +43,10 @@ export default function Login() {
             height={180}
             priority
           />
+
+          <Image src={imageUrl} alt="My Image" width={800} height={600} />
         </div>
+
         <h2 className="text-center text-3xl font-bold text-gray-900 mt-2">
           Sign in
         </h2>

@@ -63,40 +63,61 @@ export default function UploadPhotoPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
-      setError("Please select a file");
+      setError('Please select a file');
       return;
     }
 
     setLoading(true);
     try {
-      // 1. Upload file to Supabase Storage
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from("photos")
-        .upload(fileName, file);
+      // Get the current session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        router.push('/login');
+        return;
+      }
 
-      if (uploadError) throw uploadError;
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        const base64File = reader.result;
 
-      // 2. Get the public URL
-      const { data: publicUrlData } = supabase.storage
-        .from("photos")
-        .getPublicUrl(fileName);
+        try {
+          // Upload to R2 through our API with auth header
+          const response = await fetch('/api/r2/upload', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}` // Add auth token
+            },
+            body: JSON.stringify({
+              file: base64File,
+              title,
+              description,
+              caption,
+            }),
+          });
 
-      // 3. Create database record
-      const { error: dbError } = await supabase.from("photos").insert({
-        title,
-        description,
-        caption,
-        url: publicUrlData.publicUrl,
-        uploaded_at: new Date().toISOString(),
-      });
+          const data = await response.json();
 
-      if (dbError) throw dbError;
+          if (!response.ok) {
+            throw new Error(data.details || data.error || 'Upload failed');
+          }
 
-      router.push("/photos");
+          router.push('/photos');
+        } catch (uploadError) {
+          console.error('Upload error:', uploadError);
+          setError(uploadError instanceof Error ? uploadError.message : 'Error uploading photo');
+        }
+      };
+
+      reader.onerror = () => {
+        setError('Error reading file');
+      };
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error uploading photo");
+      console.error('Form error:', err);
+      setError(err instanceof Error ? err.message : 'Error uploading photo');
     } finally {
       setLoading(false);
     }

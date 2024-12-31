@@ -38,7 +38,14 @@ export default function PhotosPage() {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await fetch("/api/photos");
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        const response = await fetch("/api/photos", {
+          headers: {
+            'Authorization': `Bearer ${session?.access_token}`
+          }
+        });
+        
         if (!response.ok) {
           throw new Error("Failed to fetch photos");
         }

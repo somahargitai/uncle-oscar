@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Navigation from "@/components/Navigation";
 import { useRouter } from "next/router";
 import { User } from "@supabase/supabase-js";
+import { Loader } from "@/components/ui/loader";
 
 export default function FamilyPage() {
   const [familyMembers, setFamilyMembers] = useState<FamilyMembers>({
@@ -70,7 +71,7 @@ export default function FamilyPage() {
   }, []);
 
   if (loading) {
-    return <div className="pt-16 p-4">Loading family members...</div>;
+    return <Loader />;
   }
 
   if (error) {

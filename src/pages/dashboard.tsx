@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
-import { Upload, Users, FileText, BookOpen } from "lucide-react";
+import { Upload, Users, FileText, BookOpen, Loader } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
@@ -102,7 +102,7 @@ export default function Dashboard() {
               </div>
             </div>
           ) : (
-            <p>Loading user...</p>
+            <Loader />
           )}
         </div>
       </div>

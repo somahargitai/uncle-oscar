@@ -5,6 +5,7 @@ import { Photo } from "@/types/photo";
 import { supabase } from "@/lib/supabaseClient";
 import Navigation from "@/components/Navigation";
 import { User } from "@supabase/supabase-js";
+import { Loader } from "@/components/ui/loader";
 
 export default function PhotosPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -62,7 +63,7 @@ export default function PhotosPage() {
   }, []);
 
   if (loading) {
-    return <div className="pt-16 p-4">Loading...</div>;
+    return <Loader />;
   }
 
   if (error) {

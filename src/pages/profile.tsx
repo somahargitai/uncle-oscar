@@ -55,15 +55,6 @@ export default function FamilyPage() {
         });
 
         if (!response.ok) {
-          if (response.status === 404) {
-            setFamilyMembers({
-              parents: [],
-              children: [], 
-              siblings: [],
-              grandparents: []
-            });
-            return;
-          }
           throw new Error("Failed to fetch family members");
         }
 
